@@ -7,5 +7,12 @@ __pycache__/
 bin/
 obj/
 *.nupkg
+# NEVER commit commercial game files (read-only local reference only, see docs/limitations.md)
+StardewValley.dll
+StardewValley*.dll
+MonoGame.Framework.dll
+xTile.dll
+StardewValley.GameData.dll
+/game-ref*/
 # keep original but ignore temp
 *.tmp
