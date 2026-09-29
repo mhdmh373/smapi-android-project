@@ -1,0 +1,9 @@
+{
+  "Name": "Big Inventory (Mobile)",
+  "Author": "custom build for Android",
+  "Version": "1.1.0",
+  "Description": "Makes the player backpack bigger (any multiple of 12 slots) and keeps it resized when the save is loaded. Uses reflection only, with no hard dependency on game internals. Includes a reflection discovery dump (property/field/method names, types and values) for Farmer inventory/capacity members, and tries the candidate names Items/MaxItems. Console command: biginventory get | set <slots> | discover.",
+  "UniqueID": "custom.BigInventory",
+  "EntryDll": "BigInventory.dll",
+  "MinimumApiVersion": "4.0.0"
+}

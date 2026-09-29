@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>BigInventory</AssemblyName>
+    <RootNamespace>BigInventory</RootNamespace>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <Description>Enlarges the player backpack using reflection only, with diagnostics that print Farmer inventory/capacity members.</Description>
+  </PropertyGroup>
+
+  <!--
+    نرجع فقط إلى واجهة SMAPI العامة (StardewModdingAPI.dll).
+    لا مرجع مباشر لـ StardewValley.dll إطلاقاً، ولا Harmony، ولا تخمين لأسماء داخل اللعبة
+    خارج قائمة المرشحين المذكورة في الطلب.
+  -->
+  <ItemGroup>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>../../original/StardewModdingAPI.dll.orig</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
