@@ -1,0 +1,11 @@
+# build artifacts
+dist/
+tmp/
+__pycache__/
+*.pyc
+.venv/
+bin/
+obj/
+*.nupkg
+# keep original but ignore temp
+*.tmp
