@@ -12,11 +12,14 @@
 | `dist/StardewModdingAPI.dll` | الـ DLL المرقّع (4 دوال = `ret`) |
 | `dist/StardewModdingAPI.dll.orig` | الأصلي بجانبه — كل تعديل قابل للعكس |
 | `dist/BigInventory-v3.zip` | مود تكبير الحقيبة مع اكتشاف Reflection |
+| `dist/SmartKeyboard-v1.zip` | مود زر الكيبورد العائم (ضغط/إمساك/تحرير + معدِّلات، بلا مرجع لعبة) — **لم يُختبر على جهاز** |
 | `original/` | نسخ أصلية محفوظة (`StardewModdingAPI.dll.orig`, `BigInventory.dll.orig`, `Mono.Cecil.dll`) |
 
 ## التقارير
 - `docs/developer-mode-report.md` — من أين تأتي قيمة `DeveloperMode` ولماذا لا تتأثر بملفات الإعداد (تحليل Cecil، بدون تعديل DLL).
 - `docs/biginventory-discovery.md` — اكتشاف-reflection الجديد لمرشحي `Items`/`MaxItems`.
+- `docs/keyboard.md` — مود Smart Keyboard + قائمة اختباره (تحقق ساكن فقط).
+- `docs/measure-guide.md` — دليل القياس م1 بخطوات الهاتف.
 - `docs/limitations.md` — **قائمة صريحة بما لم يُختبر**.
 
 ## الأدوات
@@ -53,6 +56,24 @@ python3 scripts/build_zips.py \
   --out-biginventory dist/BigInventory-v3.zip
 ```
 
+### بناء SmartKeyboard + فحص بلا-مرجع-لعبة
+```bash
+bash scripts/build_keyboard.sh
+python3 scripts/verify_nogameref.py src/SmartKeyboard dist/SmartKeyboard/SmartKeyboard.dll
+python3 scripts/build_zips.py \
+  --mod-name SmartKeyboard \
+  --mod-dll dist/SmartKeyboard/SmartKeyboard.dll \
+  --mod-manifest src/SmartKeyboard/manifest.json \
+  --out-mod dist/SmartKeyboard-v1.zip
+```
+
+### أدوات القياس (م1، بايثون فقط)
+```bash
+python3 scripts/measure_boot.py SMAPI-latest.txt
+python3 scripts/classify_crash.py SMAPI-latest.txt
+python3 scripts/measure_mods.py --plan Mods
+```
+
 ## الفحوصات الآلية (مطلوبة لكل zip)
 1. لا directory entries
 2. ترتيب الأسماء مطابق للأصلي (لزيب SMAPI)
@@ -64,5 +85,6 @@ python3 scripts/build_zips.py \
 - لا تخمين لأسماء أعضاء اللعبة خارج قائمة المرشحين المصرّح بها.
 - لا منطق يتجاوز التحقق من نسخة اللعبة ولا يدعم نسخاً مقرصنة.
 - كل تعديل على `StardewModdingAPI.dll` قابل للعكس (الأصلي محفوظ).
-- مود لوحة المفاتيح/الأزرار الافتراضية **موقوف** حتى تأكيد توفر `StardewValley.dll` أو جهاز مروّت.
+- مود SmartKeyboard **مُنفّذ كمصدر نظيف** (لا نسخ AGPL) ويفترض توفر اللعبة وقت التشغيل فقط؛
+  ملف `StardewValley.dll` للقراءة المحلية فقط ولا يُرفع للمستودع أبدًا.
 - `DeveloperMode` **غير معدّل** في الـ DLL (موقوف حتى موافقتك).

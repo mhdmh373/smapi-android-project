@@ -1,0 +1,10 @@
+{
+  "Name": "Smart Keyboard",
+  "Author": "mhdmh373",
+  "Version": "1.0.0",
+  "Description": "Floating keyboard button near the menu buttons. Injects real key press/hold/release with Shift/Ctrl/Alt support.",
+  "UniqueID": "mhdmh373.SmartKeyboard",
+  "EntryDll": "SmartKeyboard.dll",
+  "MinimumApiVersion": "4.3.2",
+  "UpdateKeys": []
+}

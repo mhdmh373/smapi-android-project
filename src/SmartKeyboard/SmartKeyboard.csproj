@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>SmartKeyboard</AssemblyName>
+    <RootNamespace>SmartKeyboard</RootNamespace>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Description>Floating keyboard button for Android: injects real SButton press/hold/release (with modifiers) through SMAPI input state. Reflection only.</Description>
+  </PropertyGroup>
+
+  <!--
+    مرجع واحد فقط: واجهة SMAPI العامة. لا مرجع لـ StardewValley.dll ولا
+    MonoGame ولا Harmony. كل الوصول للعبة يتم بأسماء موثقة من مصدر
+    SMAPI-Android-1.6 نفسه (Game1.input/graphics/viewport/dialogueFont)
+    عبر Reflection وقت التشغيل فقط.
+  -->
+  <ItemGroup>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>../../original/StardewModdingAPI.dll.orig</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
