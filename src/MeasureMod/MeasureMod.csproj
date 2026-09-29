@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>MeasureMod</AssemblyName>
+    <RootNamespace>MeasureMod</RootNamespace>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Description>On-device performance reporter: milestones, freezes, memory, mod list. Public SMAPI APIs only.</Description>
+  </PropertyGroup>
+
+  <!-- مرجع SMAPI فقط. لا مرجع للعبة ولا Harmony. -->
+  <ItemGroup>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>../../original/StardewModdingAPI.dll.orig</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

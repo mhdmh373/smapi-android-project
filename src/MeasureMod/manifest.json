@@ -1,0 +1,10 @@
+{
+  "Name": "Measure",
+  "Author": "mhdmh373",
+  "Version": "1.0.0",
+  "Description": "On-device reporter: boot milestones, freezes, memory, and mod list. Command: measure",
+  "UniqueID": "mhdmh373.Measure",
+  "EntryDll": "MeasureMod.dll",
+  "MinimumApiVersion": "4.3.2",
+  "UpdateKeys": []
+}
