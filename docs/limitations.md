@@ -10,6 +10,12 @@
 
 ## 2) مخرجاتنا — بنيوية فقط، لم تُجرَّب على جهاز
 
+### أجهزة موثقة من المستخدم (تحديث 29/9)
+- الهاتف: Samsung M52، رام 8GB — يحدد سقف الـ100 مود (النتيجة من القياس النهائي).
+- اللعبة: 1.6.15.0 build 24354 — طابقت `StardewValley.dll` المُستلم (سلسلة `1.6.15.24354` بداخله) [تحقق ساكن فقط].
+- موضع زر الكيبورد: يمين الشاشة تحت (!) و(≡) — من `docs/keyboard-placement.jpg`.
+- `StardewValley.dll` يُستخدم للقراءة فقط خارج المستودع (`game-ref-local-only/`) ولا يُرفع أبدًا — وجوده حاليًا في تاريخ GitHub العام **يجب حذفه** (انظر قسم 6).
+
 ### SMAPI
 - `dist/SMAPI-Android-4_3_2_5-patched.zip`
   - `no directory entries` ✓ | ترتيب 38 ملف مطابق للأصلي ✓ | `testzip() is None` ✓
@@ -31,7 +37,9 @@
 - **لم يُختبر** التصغير/التكبير الفعلي ولا إعادة رسم واجهة الحقيبة.
 
 ## 3) موقوف / لم يُنفّذ
-- مود لوحة المفاتيح/الأزرار الافتراضية — **لم يُنفّذ إطلاقاً**، بطلب صريح، وموقوف حتى تأكيد توفر `StardewValley.dll` أو جهاز مروّت.
+- مود لوحة المفاتيح: **نُفّذ الآن كمصدر نظيف** (`src/SmartKeyboard`، زيب `dist/SmartKeyboard-v1.zip`)
+  بنفس شروط البنية (ملفان، بلا مجلدات، testzip سليم، EntryDll) وبلا مرجع لعبة
+  (فحص `verify_nogameref.py`) — **لكنه لم يُشغَّل على جهاز بعد**.
 - لم يُخترع أي اسم داخل `StardewValley.dll` ولم يُكتب كود Harmony عليه.
 - لم يُضف أي منطق يتجاوز التحقق من نسخة اللعبة أو يتيح نسخاً مقرصنة.
 - لم يُعدّل `DeveloperMode` في الـ DLL.
@@ -52,4 +60,12 @@
 - manifest.json صالح JSON وفيه EntryDll
 - Cecil: StartLoggerToScreen/StopLoggerToScreen/OnLogImpl/<OnGameInitialized>b__62_0 == 1 instr
 - BigInventory.dll: مراجعه System.Runtime, System.Collections, StardewModdingAPI, System.Linq فقط (0 مرجع للعبة)
+- SmartKeyboard.dll: بلا أي اسم تجميع ASCII للعبة (MonoGame/Harmony/xTile/StardewValley) + الأسماء الافتراضية الستة موجودة في تعداد SButton
 ```
+
+## 6) تحذير: ملف اللعبة في تاريخ GitHub العام
+- رُفع `StardewValley.dll` (9MB) إلى المستودع العام عبر الويب — مخالف لقاعدة
+  «للقراءة فقط ولا يُرفع». النسخة المحلية الآن خارج التتبع (`game-ref-local-only/`).
+- المطلوب من الهاتف (3 نقرات): افتح الملف في GitHub ← ⋮ ← Delete ← Commit.
+  التاريخ سيبقى يحويه حتى إعادة كتابة التاريخ — أخبرني لأجهز لك أمرًا واحدًا
+  لتنظيفه إن أردت (يحتاج توكن لمرة واحدة، أطلبه أدناه).

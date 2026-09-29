@@ -75,6 +75,58 @@ def build_biginventory_zip(dll_path, manifest_path, out_path):
     print(f"Built BigInventory zip: {out_path} ({os.path.getsize(out_path)} bytes)")
     return verify_biginventory_zip(out_path)
 
+def build_mod_zip(mod_name, dll_path, manifest_path, out_path):
+    # زيب مود عام: مجلد واحد باسم المود يحوي manifest.json + <Mod>.dll فقط
+    # بلا مدخلات مجلدات، deflate (نفس شرط اللانشر).
+    manifest_bytes = open(manifest_path, 'rb').read()
+    j = json.loads(manifest_bytes.decode('utf-8'))
+    if "EntryDll" not in j:
+        print(f"ERROR manifest.json missing EntryDll: {j}", file=sys.stderr)
+        sys.exit(4)
+    dll_bytes = open(dll_path, 'rb').read()
+    out_dir = os.path.dirname(os.path.abspath(out_path))
+    os.makedirs(out_dir, exist_ok=True)
+    dll_name = j["EntryDll"]
+    with zipfile.ZipFile(out_path, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=6) as z:
+        for arcname, data in [(f"{mod_name}/manifest.json", manifest_bytes), (f"{mod_name}/{dll_name}", dll_bytes)]:
+            zi = zipfile.ZipInfo(filename=arcname)
+            zi.compress_type = zipfile.ZIP_DEFLATED
+            zi.date_time = (2026, 9, 29, 0, 0, 0)
+            z.writestr(zi, data)
+    print(f"Built {mod_name} zip: {out_path} ({os.path.getsize(out_path)} bytes)")
+    return verify_mod_zip(out_path, mod_name)
+
+
+def verify_mod_zip(zip_path, mod_name=None):
+    z = zipfile.ZipFile(zip_path, 'r')
+    infos = z.infolist()
+    if any(i.is_dir() for i in infos):
+        print(f"FAIL {zip_path}: has directory entries", file=sys.stderr)
+        return False
+    if z.testzip() is not None:
+        print(f"FAIL {zip_path}: testzip failed", file=sys.stderr)
+        return False
+    try:
+        names = [i.filename for i in infos]
+        manifest_name = next((n for n in names if n.endswith("/manifest.json")), None)
+        if manifest_name is None:
+            print(f"FAIL {zip_path}: no manifest.json", file=sys.stderr)
+            return False
+        j = json.loads(z.read(manifest_name).decode('utf-8'))
+        if "EntryDll" not in j:
+            print(f"FAIL {zip_path}: manifest missing EntryDll", file=sys.stderr)
+            return False
+        dll_name = manifest_name.rsplit("/", 1)[0] + "/" + j["EntryDll"]
+        if dll_name not in names:
+            print(f"FAIL {zip_path}: EntryDll {j['EntryDll']} not in zip", file=sys.stderr)
+            return False
+    except Exception as e:
+        print(f"FAIL {zip_path}: manifest read error: {e}", file=sys.stderr)
+        return False
+    print(f"OK {zip_path}: mod zip valid, EntryDll={j['EntryDll']}, files={len(infos)}")
+    return True
+
+
 def verify_smapi_zip(zip_path, orig_zip_path=None):
     z = zipfile.ZipFile(zip_path, 'r')
     infos = z.infolist()
@@ -130,6 +182,11 @@ def main():
     ap.add_argument("--out-biginventory", dest="out_bi", help="Output BigInventory zip path")
     ap.add_argument("--verify", dest="verify", help="Verify a SMAPI zip at path")
     ap.add_argument("--verify-biginventory", dest="verify_bi", help="Verify a BigInventory zip at path")
+    ap.add_argument("--mod-name", dest="mod_name", help="Mod folder name for generic mod zip (e.g. SmartKeyboard)")
+    ap.add_argument("--mod-dll", dest="mod_dll", help="Path to <Mod>.dll for generic mod zip")
+    ap.add_argument("--mod-manifest", dest="mod_manifest", help="Path to manifest.json for generic mod zip")
+    ap.add_argument("--out-mod", dest="out_mod", help="Output generic mod zip path")
+    ap.add_argument("--verify-mod", dest="verify_mod", help="Verify a generic mod zip at path")
     ap.add_argument("--orig-for-verify", dest="orig_for_verify", help="Orig zip to compare order when verifying SMAPI zip")
     args = ap.parse_args()
     ok = True
@@ -142,6 +199,11 @@ def main():
         ok &= verify_smapi_zip(args.verify, args.orig_for_verify or args.smapi_orig)
     if args.verify_bi:
         ok &= verify_biginventory_zip(args.verify_bi)
+    if args.mod_name and args.mod_dll and args.out_mod:
+        manifest = args.mod_manifest or f"src/{args.mod_name}/manifest.json"
+        ok &= build_mod_zip(args.mod_name, args.mod_dll, manifest, args.out_mod)
+    if args.verify_mod:
+        ok &= verify_mod_zip(args.verify_mod)
     sys.exit(0 if ok else 1)
 
 if __name__ == "__main__":
