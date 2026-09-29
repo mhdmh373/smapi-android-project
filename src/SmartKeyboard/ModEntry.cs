@@ -20,6 +20,12 @@ namespace SmartKeyboard
         private ParsedKey heldKey;
         private bool layoutDone;
 
+        // اختبار ذاتي: نتذكر آخر مفتاح حقنّاه، وعندما يعيده SMAPI إلينا
+        // كحدث ButtonPressed/Released نطبع سطرًا في السجل (إثبات الذهاب والإياب).
+        private SButton? expectPress;
+        private SButton? expectRelease;
+        private bool pressSeen;
+
         private struct ParsedKey
         {
             public string Label;
@@ -73,8 +79,16 @@ namespace SmartKeyboard
         {
             try
             {
+                // اختبار ذاتي: هل أعاد SMAPI مفتاحنا المحقون إلينا؟
                 if (e.Button != SButton.MouseLeft)
+                {
+                    if (expectPress.HasValue && e.Button == expectPress.Value && !pressSeen)
+                    {
+                        pressSeen = true;
+                        Monitor.Log($"Smart Keyboard self-test: SMAPI delivered {e.Button} press (injection works).", LogLevel.Info);
+                    }
                     return;
+                }
                 if (!TryCursor(e, out float x, out float y))
                     return;
                 EnsureLayout();
@@ -100,8 +114,16 @@ namespace SmartKeyboard
         {
             try
             {
+                // اختبار ذاتي: وصول التحرير يعني دورة ضغط/إمساك/تحرير كاملة.
                 if (e.Button != SButton.MouseLeft)
+                {
+                    if (expectRelease.HasValue && e.Button == expectRelease.Value)
+                    {
+                        expectRelease = null;
+                        Monitor.Log($"Smart Keyboard self-test: SMAPI delivered {e.Button} release (full cycle works).", LogLevel.Info);
+                    }
                     return;
+                }
                 if (heldKey.Label != null)
                 {
                     Inject(heldKey, false);
@@ -174,12 +196,16 @@ namespace SmartKeyboard
                 foreach (SButton m in key.Modifiers)
                     GameRef.OverrideButton(state, m, true);
                 GameRef.OverrideButton(state, key.Main, true);
+                expectPress = key.Main;
+                pressSeen = false;
             }
             else
             {
                 GameRef.OverrideButton(state, key.Main, false);
                 for (int i = key.Modifiers.Length - 1; i >= 0; i--)
                     GameRef.OverrideButton(state, key.Modifiers[i], false);
+                expectPress = null;
+                expectRelease = key.Main;
             }
         }
 

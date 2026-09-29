@@ -11,8 +11,8 @@
 | `dist/SMAPI-Android-4_3_2_5-patched.zip` | زيب SMAPI مرقّع بالبنية المقبولة (38 ملف، deflate، بلا directory entries، ترتيب مطابق للأصلي) |
 | `dist/StardewModdingAPI.dll` | الـ DLL المرقّع (4 دوال = `ret`) |
 | `dist/StardewModdingAPI.dll.orig` | الأصلي بجانبه — كل تعديل قابل للعكس |
-| `dist/BigInventory-v3.zip` | مود تكبير الحقيبة مع اكتشاف Reflection |
-| `dist/SmartKeyboard-v1.zip` | مود زر الكيبورد العائم (ضغط/إمساك/تحرير + معدِّلات، بلا مرجع لعبة) — **لم يُختبر على جهاز** |
+| `dist/BigInventory-v3.zip` | (مُسقط بطلب المستخدم 29/9 — للمرجع فقط) |
+| `dist/SmartKeyboard-v1.1.zip` | مود زر الكيبورد العائم v1.0.1 (اختبار ذاتي self-test، بلا مرجع لعبة) — الرسم والتحميل مُجرَّبان على الجهاز |
 | `original/` | نسخ أصلية محفوظة (`StardewModdingAPI.dll.orig`, `BigInventory.dll.orig`, `Mono.Cecil.dll`) |
 
 ## التقارير

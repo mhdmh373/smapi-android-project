@@ -9,9 +9,9 @@
     <LangVersion>latest</LangVersion>
     <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
     <Description>Floating keyboard button for Android: injects real SButton press/hold/release (with modifiers) through SMAPI input state. Reflection only.</Description>
   </PropertyGroup>
 
