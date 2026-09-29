@@ -31,8 +31,8 @@ namespace MeasureMod
             Mark("mod-entry");
             helper.Events.GameLoop.GameLaunched += (s, e) => { Mark("game-launched"); OnLaunched(); };
             helper.Events.GameLoop.SaveLoaded += (s, e) => Mark("save-loaded");
-            helper.Events.GameLoop.DayStarted += (s, e) => Mark("day-started");
-            helper.Events.GameLoop.ReturnedToTitle += (s, e) => { Mark("back-to-title"); WriteReport("title"); };
+            helper.Events.GameLoop.DayStarted += (s, e) => { Mark("day-started"); PrintReport(); WriteReport("day-started"); };
+            helper.Events.GameLoop.ReturnedToTitle += (s, e) => { Mark("back-to-title"); PrintReport(); WriteReport("title"); };
             helper.Events.GameLoop.UpdateTicked += OnTick;
             helper.Events.GameLoop.OneSecondUpdateTicked += OnSecond;
 
@@ -84,6 +84,12 @@ namespace MeasureMod
                 seconds++;
                 if (seconds % 30 == 0)
                     SampleMem(seconds + "s");
+                // تقرير دوري كل 5 دقائق في السجل — لا حاجة لكونسول على الهاتف
+                if (seconds > 0 && seconds % 300 == 0)
+                {
+                    PrintReport();
+                    WriteReport("periodic");
+                }
             }
             catch { }
         }
